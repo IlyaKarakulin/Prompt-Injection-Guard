@@ -1,0 +1,5 @@
+train_path: prompt-injection/data/train-00000-of-00001.parquet
+test_path: prompt-injection/data/test-00000-of-00001.parquet
+format: parquet
+model_name: cointegrated/rubert-tiny2
+model_path: llm_defense_model
