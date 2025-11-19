@@ -1,2 +1,3 @@
 .venv
 prompt-injection
+model/model.safetensors
