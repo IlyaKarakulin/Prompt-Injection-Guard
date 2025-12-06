@@ -7,8 +7,8 @@ from src.load_dataset import get_dataset
 from src.core.classifier import LLMDefenseDetector
 
 
-def train_and_evaluate(dataset, model_name, output_dir):
-    detector = LLMDefenseDetector(model_name=model_name, output_dir=output_dir)
+def train_and_evaluate(dataset, model_name, output_dir, model_path):
+    detector = LLMDefenseDetector(model_name=model_name, output_dir=output_dir, model_path=model_path)
     
     print(" Начало обучения LLM-детектора...")
     
@@ -33,9 +33,10 @@ def main(args_path: str | Path):
     format = args["format"]
     model_name = args["model_name"]
     output_dir = args["output_dir"]
+    model_path = args["model_path"]
 
     dataset = get_dataset(train_path, test_path, format)
-    train_and_evaluate(dataset, model_name, output_dir)
+    train_and_evaluate(dataset, model_name, output_dir, model_path)
 
 
 if __name__ == "__main__":
