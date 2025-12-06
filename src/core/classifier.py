@@ -3,6 +3,9 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trai
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import numpy as np
 
+def is_valid_text(example):
+    return isinstance(example['prompt'], str)
+
 class LLMDefenseDetector:
     def __init__(self, model_name, output_dir = None, model_path = None):
         self.model_name = model_name
@@ -18,13 +21,15 @@ class LLMDefenseDetector:
         """Подготовка данных для обучения"""
         def tokenize_function(examples):
             return self.tokenizer(
-                examples["text"], 
+                examples["prompt"], 
                 padding="max_length", 
                 truncation=True, 
                 max_length=512,
                 return_tensors="pt"  # ⬅️ Важно: возвращаем тензоры
             )
         
+        dataset = dataset.filter(is_valid_text)
+
         tokenized_datasets = dataset.map(tokenize_function, batched=True)
         tokenized_datasets = tokenized_datasets.rename_column("label", "labels")
         
@@ -50,13 +55,15 @@ class LLMDefenseDetector:
         training_args = TrainingArguments(
             output_dir=self.output_dir,
             learning_rate=2e-5,
-            per_device_train_batch_size=16,
-            per_device_eval_batch_size=16,
+            per_device_train_batch_size=48,
+            per_device_eval_batch_size=48,
             num_train_epochs=3,
             weight_decay=0.01,
             save_strategy="epoch",
             logging_dir="./logs",
             report_to=None,
+            dataloader_num_workers=8,
+            dataloader_pin_memory=True,
         )
         
         trainer = Trainer(
