@@ -12,7 +12,8 @@ import pandas as pd
 from tqdm import tqdm
 
 from datasets import load_dataset
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix, roc_curve, auc
+import matplotlib.pyplot as plt
 
 try:
     from transformers import AutoTokenizer, AutoModelForSequenceClassification
@@ -21,7 +22,7 @@ try:
 except Exception:
     _torch_available = False
 
-from predict import process_prediction
+from tools.predict import process_prediction
 _tokenizer = None
 _model = None
 
@@ -117,9 +118,9 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
     rows = []
     y_true = []
     y_pred = []
+    confidences = []
 
-
-    user_fn = process_prediction 
+    print('threshold = ', threshold)
 
     it = ds
     if limit is not None:
@@ -131,7 +132,9 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
         label = extract_label(ex)
         
         try:
-            res = user_fn(model_name, model_path, text)
+            res = process_prediction(model_name, model_path, text)
+            confidences.append(res)
+            # print("Result: ", res)
         except Exception as e:
             print(f"[!] process_prediction упало на записи {i}: {e}", file=sys.stderr)
             pred = None
@@ -156,6 +159,9 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
                 except Exception:
                     pred = int(bool(res))
 
+            
+        # print("    Prediction = ", pred)
+
         rows.append({"idx": i, "text": text, "label": label if label is not None else "", "pred": pred})
         if label is not None and pred is not None:
             y_true.append(int(label))
@@ -177,6 +183,29 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
         print(f"Примеры с метками: {len(y_true)}")
         print(f"Accuracy: {acc:.4f}  Precision: {prec:.4f}  Recall: {rec:.4f}  F1: {f1:.4f}")
         print(f"TP={tp} FP={fp} FN={fn} TN={tn}")
+
+        fpr, tpr, thresholds = roc_curve(y_true, confidences)
+        roc_auc = auc(fpr, tpr)
+
+        df = pd.DataFrame({
+            "fpr": fpr,
+            "tpr": tpr,
+            "threshold": thresholds
+        })
+
+        df.to_csv("roc_data_1.csv", index=False, encoding="utf-8")
+
+        plt.figure(figsize=(6, 6))
+        plt.plot(fpr, tpr, label=f'ROC curve (AUC = {roc_auc:.3f})')
+        plt.plot([0, 1], [0, 1], '--', label='Random baseline')
+
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('ROC Curve')
+        plt.legend(loc="lower right")
+        plt.grid(True)
+        plt.savefig("roc_curve_1.png", dpi=300, bbox_inches='tight')
+        plt.show()
     else:
         print("[i] В датасете нет меток в используемом split (или они нераспознаны). Проверь results.csv.")
 
