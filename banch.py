@@ -193,7 +193,7 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
             "threshold": thresholds
         })
 
-        df.to_csv("roc_data_1.csv", index=False, encoding="utf-8")
+        df.to_csv("roc_data.csv", index=False, encoding="utf-8")
 
         plt.figure(figsize=(6, 6))
         plt.plot(fpr, tpr, label=f'ROC curve (AUC = {roc_auc:.3f})')
@@ -204,7 +204,7 @@ def run_eval(model_name: str, model_path: Optional[str], out_csv: str, split: st
         plt.title('ROC Curve')
         plt.legend(loc="lower right")
         plt.grid(True)
-        plt.savefig("roc_curve_1.png", dpi=300, bbox_inches='tight')
+        plt.savefig("roc_curve.png", dpi=300, bbox_inches='tight')
         plt.show()
     else:
         print("[i] В датасете нет меток в используемом split (или они нераспознаны). Проверь results.csv.")
