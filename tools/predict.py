@@ -1,16 +1,5 @@
 from src.core.classifier import LLMDefenseDetector
 
-
-# model_path = r"D:\git\Prompt-Injection-Guard\llm_defense_model\checkpoint-16359"
-# threshold =  0.005
-# Accuracy: 0.8190  Precision: 0.8421  Recall: 0.8000  F1: 0.8205
-# TP=48 FP=9 FN=12 TN=47
-
-# model_path = r"D:\git\Prompt-Injection-Guard\llm_defense_model\checkpoint-5453"
-# threshold =  0.01
-# Accuracy: 0.8017  Precision: 0.8246  Recall: 0.7833  F1: 0.8034
-# TP=47 FP=10 FN=13 TN=46
-
 model_path = r"D:\git\Prompt-Injection-Guard\model_2\checkpoint-8935"
 
 model_name = 'cointegrated/rubert-tiny2'
