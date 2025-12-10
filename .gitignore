@@ -1,3 +1,6 @@
 .venv
 prompt-injection
-model/model.safetensors
+prompt-injections
+model/default
+__pycache__
+cache

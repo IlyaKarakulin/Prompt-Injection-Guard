@@ -1,0 +1,6 @@
+model_name: ABOBA
+model_path: model/quantize
+output_path: data/results_quantize.csv
+split: all
+limit:
+threshold: 0.07781982421875

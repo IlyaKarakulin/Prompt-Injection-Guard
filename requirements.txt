@@ -5,3 +5,7 @@ datasets
 pyyaml
 numpy
 scikit-learn
+bitsandbytes
+matplotlib
+pandas
+streamlit

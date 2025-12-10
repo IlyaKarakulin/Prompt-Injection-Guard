@@ -1,0 +1,5 @@
+output_path: /home/babrakadabra/third_course/Prompt-Injection-Guard/model/quantize
+model_path: /home/babrakadabra/third_course/Prompt-Injection-Guard/model/default
+quant_bits: 4
+quant_type: nf4
+use_double_quant: True
