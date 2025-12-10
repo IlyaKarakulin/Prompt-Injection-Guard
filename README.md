@@ -1,8 +1,7 @@
 # Prompt-Injection-Guard
-<<<<<<< HEAD
-=======
 
 **Это установка датасета**
+
 * Из root (корневой папки репоса):
 ```
 curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
@@ -34,4 +33,3 @@ model/quantize
 **Демка**
 
 * Вас интересует только файл app_streamlit.py - при запуске выведутся все инструкции
->>>>>>> baseline
