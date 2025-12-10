@@ -1,0 +1,11 @@
+jsonargparse
+torch
+transformers
+datasets
+pyyaml
+numpy
+scikit-learn
+bitsandbytes
+matplotlib
+pandas
+streamlit
