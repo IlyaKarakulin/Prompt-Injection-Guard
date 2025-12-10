@@ -72,10 +72,10 @@ def quantize_and_save_model(
             llm_int8_enable_fp32_cpu_offload=False,
         )
     
-    print(f"📊 Quantization config: {quant_bits}-bit {quant_type}")
+    print(f"Quantization config: {quant_bits}-bit {quant_type}")
     
     if isinstance(model_path, str):
-        print(f"📥 Loading model from: {model_path}")
+        print(f"Loading model from: {model_path}")
         
         # Load model with quantization
         model = AutoModelForSequenceClassification.from_pretrained(
@@ -107,7 +107,7 @@ def quantize_and_save_model(
         json.dump(quant_config_dict, f, indent=2)
     
     print(f"✅ Quantized model saved to {save_path}")
-    print(f"📦 Files created:")
+    print(f"Files created:")
     for file in save_path.glob("*"):
         print(f"   - {file.name} ({file.stat().st_size / 1024 / 1024:.1f} MB)")
     

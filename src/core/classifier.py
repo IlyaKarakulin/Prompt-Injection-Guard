@@ -239,7 +239,7 @@ class LLMDefenseDetector:
         }
     
     def stable_softmax(self, logits: torch.Tensor, dim: int = -1) -> torch.Tensor:
-        """Стабилизированный softmax с защитой от overflow/underflow"""
+        """Softmax without overflow/underflow"""
         logits = logits - logits.max(dim=dim, keepdim=True).values
         exp_logits = torch.exp(logits)
         

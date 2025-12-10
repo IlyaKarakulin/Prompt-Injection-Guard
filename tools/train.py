@@ -37,7 +37,7 @@ def train_and_evaluate(
     )
     
     results = trainer.evaluate()
-    print(f"📊 Результаты на валидационной выборке: {results}")
+    print(f"Результаты на валидационной выборке: {results}")
     
     return detector
 
